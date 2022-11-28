@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import Layout from "../components/Layout";
 import SmoothScrollWrapper from "../components/SmoothScrollWrapper";
 
-const contact = () => {
+const Contact = () => {
   useEffect(() => {
     gsap.to(".introLine", {
       bottom: "6rem",
@@ -112,4 +112,4 @@ const contact = () => {
   );
 };
 
-export default contact;
+export default Contact;

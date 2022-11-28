@@ -26,22 +26,23 @@ const SmoothScrollWrapper: React.FC<SmoothScrollWrapperProps> = (props) => {
         
     }, [size.height]);
 
-    useEffect(() => {
-        requestAnimationFrame(() => skewScrolling());
-    }, []);
-
+    
     const skewScrolling = () => {
         if(!smoothContent.current) return;
-
+        
         skewConfigs.current = window.scrollY;
         skewConfigs.previous += (skewConfigs.current - skewConfigs.previous) * skewConfigs.ease;
         skewConfigs.rounded = Math.round(skewConfigs.previous * 100) / 100;
-
+        
         smoothContent.current.style.transform = `translate3d(0, -${skewConfigs.rounded}px, 0)`;
-
+        
         //loop vai raf
         requestAnimationFrame(() => skewScrolling());
     }
+
+    useEffect(() => {
+        requestAnimationFrame(() => skewScrolling());
+    }, [skewScrolling]);
 
   return (
     <div ref={smoothWrapper} id="smooth-wrapper">

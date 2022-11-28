@@ -21,7 +21,7 @@ export default function Home() {
   const sectionsRef = useRef(
     [...Array(5)].map((section) => createRef() as RefObject<HTMLDivElement>)
   );
-  let steps: any[] | NodeListOf<Element>;
+  const steps = useRef<any>([]);
   let animating = false;
   let scrollToIndex = 0;
 
@@ -35,7 +35,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    steps = document.querySelectorAll(".step");
+    steps.current = document.querySelectorAll(".step");
     playStepsAnimation();
 
     Observer.create({
@@ -51,7 +51,7 @@ export default function Home() {
 
   const playStepsAnimation = () => {
     if(!steps) return;
-    gsap.to(steps[0], {
+    gsap.to(steps.current[0], {
       background: "#e5e7eb",
       scale: 1.5,
       duration: 0.5,
@@ -59,7 +59,7 @@ export default function Home() {
 
     if (window.innerWidth < 768) {
       gsap.fromTo(
-        steps,
+        steps.current,
         { y: 100 },
         {
           y: 0,
@@ -70,7 +70,7 @@ export default function Home() {
       );
     } else {
       gsap.fromTo(
-        steps,
+        steps.current,
         { x: 100 },
         {
           x: 0,
@@ -92,7 +92,7 @@ export default function Home() {
 
   const changeSlide = () => {
     if(!steps) return;
-    steps.forEach((step, i) => {
+    steps.current.forEach((step: gsap.TweenTarget, i: number) => {
       gsap.to(step, {
         background: i === scrollToIndex ? "#e5e7eb" : "none",
         scale: i === scrollToIndex ? 1.5 : 1,
