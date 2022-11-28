@@ -15,13 +15,13 @@ const SmoothScrollWrapper: React.FC<SmoothScrollWrapperProps> = (props) => {
     const smoothContent = useRef<HTMLDivElement>(null);
 
     const skewConfigs = {
-        ease: 0.05,
+        ease: 0.1,
         current: 0,
         previous: 0,
         rounded: 0
     }
 
-    useEffect(() => {               
+    useEffect(() => {                       
         if(!smoothContent.current) return;         
         document.body.style.height = `${smoothContent.current.getBoundingClientRect().height}px`;
         

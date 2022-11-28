@@ -21,7 +21,6 @@ export default function useWindowSize() {
 
     function handleResize() {
       setWindowSize(getSize());
-      window.scrollTo({top: 0});
     }
 
     window.addEventListener("resize", handleResize);
