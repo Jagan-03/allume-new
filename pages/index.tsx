@@ -132,7 +132,7 @@ export default function Home() {
                 technology experience, we craft innovative strategies and
                 achieve impactful outcomes.
               </p>
-              <p className="text-lg text-cyan-500 italic before:absolute before:block before:opacity-100 before:-inset-2 before:-skew-y-3 before:bg-gray-800 relative inline-block font-sans font-semibold">
+              <p className="text-lg shadow-lg shadow-black text-cyan-500 italic before:absolute before:block before:opacity-100 before:-inset-2 before:-skew-y-3 before:bg-gray-800 relative inline-block font-sans font-semibold">
                 <span className="relative">Scroll for more</span>
               </p>
             </div>
@@ -146,7 +146,7 @@ export default function Home() {
                   {section.title}
                 </h1>
                 <Link href={section.link}>
-                  <p className="md:text-3xl text-xl text-gray-200 hover:text-cyan-500 hover:no-underline duration-500 underline underline-offset-4 italic before:duration-300 hover:before:opacity-100 before:block before:opacity-0 before:absolute before:-inset-2 before:-skew-y-3 before:bg-gray-800 relative inline-block">
+                  <p className="md:text-3xl text-xl text-gray-200 hover:text-cyan-500 hover:no-underline duration-500 underline underline-offset-4 italic before:duration-300 hover:before:opacity-100 before:shadow-2xl before:shadow-gray-900 before:block before:opacity-0 before:absolute before:-inset-2 before:-skew-y-3 before:bg-gray-800 relative inline-block">
                     <span className="relative">{section.linkName}</span>
                   </p>
                 </Link>

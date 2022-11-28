@@ -45,18 +45,28 @@ const Header: React.FC = () => {
     setMenuOpen((prevValue) => !prevValue);
   };
 
+  useEffect(() => {
+    gsap.fromTo('.invertedRadius', {
+      x: '100vw'
+    }, {
+      x: 0,
+      duration: 0.7,
+      ease: 'power.inOut'
+    })
+  }, [])
+
   return (
     <div className="fixed z-50 w-full font-sans">
       <Menu open={menuOpen} />
-      <div className="w-full flex justify-between items-center p-10 relative">
+      <div className="w-full flex justify-between items-center p-10 pr-0 relative">
         <div>
           <Link href="/" onClick={() => window.location.pathname === "/" && window.location.reload()}>
             <h1 ref={logo} className={`text-gray-200 font-bold duration-1000`}>Logo</h1>
           </Link>
         </div>
-        <div>
+        <div className="bg-gray-800 relative flex px-3 py-4 rounded-l-xl invertedRadius">
           <button
-            className="relative h-4 w-10"
+            className="h-4 w-10 relative z-50"
             onClick={() => menuIconTransform(!menuOpen)}
           >
             <hr ref={menuTop} className="border-2 border-white absolute top-0 w-full"/>

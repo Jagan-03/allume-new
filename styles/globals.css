@@ -123,3 +123,31 @@ a {
   height: 450px;
   background: #000;
 }
+
+.invertedRadius
+{
+    position: relative;
+  }
+.invertedRadius::after {
+  content: '';
+  background: none;
+  height: 2em;
+  width: 2em;
+  position: absolute;
+  bottom: -2em;
+  right: 0em;
+  border-radius: 0 15px 0 0;
+  box-shadow: 0 -0.75rem 0 0 #1f2937;
+}
+
+.invertedRadius::before {
+  content: '';
+  background: none;
+  height: 2em;
+  width: 2em;
+  position: absolute;
+  top: -2em;
+  right: 0em;
+  border-radius: 0 0 15px 0;
+  box-shadow: 0 0.75rem 0 0 #1f2937;
+}
