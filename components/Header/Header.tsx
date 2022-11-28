@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const logo = useRef(null);
+  const logo = useRef<HTMLHeadingElement>(null);
   const menuTop = useRef(null);
   const menuBottom = useRef(null);
   const size = useWindowSize();
@@ -30,6 +30,7 @@ const Header: React.FC = () => {
         borderColor: size.width < 768 ? 'white' : '#0891b2' 
       });
     } else {
+      if(!logo.current) return;
       gsap.to(menuTop.current, {
         rotate: 0,
         top: 0,
@@ -43,28 +44,6 @@ const Header: React.FC = () => {
     }
     setMenuOpen((prevValue) => !prevValue);
   };
-
-  // useEffect(() => {
-  //   gsap.to(logo.current, {
-  //     color: logo.current.style.color === '#0891b2' ? 'white' : '#0891b2',
-  //     scrollTrigger: {
-  //       trigger: '.headerTrigger',
-  //       ontoggle: () => console.log('Start'),
-  //       start: 'top top',
-  //       end: 'bottom top',
-  //       toggleActions: 'play reset play reverse'
-  //     }
-  //   })
-  //   gsap.to([menuTop.current, menuBottom.current], {
-  //     borderColor: menuTop.current.style.color === '#0891b2' ? 'white' : '#0891b2',
-  //     scrollTrigger: {
-  //       trigger: '.headerTrigger',
-  //       start: 'top top',
-  //       end: 'bottom top',
-  //       toggleActions: 'play reset play reverse'
-  //     }
-  //   })    
-  // }, [])
 
   return (
     <div className="fixed z-50 w-full font-sans">

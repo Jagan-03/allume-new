@@ -12,9 +12,9 @@ interface MenuProps
 
 const Menu: React.FC<MenuProps> = (props) => {
     
-  const menuPanel = useRef<Element | null>(null);
-  const menuContact = useRef<Element | null>(null);
-  const menuLinksRef = useRef(menuLinks.map(link => createRef() as RefObject<HTMLDivElement>));
+  const menuPanel = useRef<HTMLDivElement>(null);
+  const menuContact = useRef<HTMLDivElement>(null);
+  const menuLinksRef = useRef(menuLinks.map(link => createRef() as RefObject<HTMLAnchorElement>));
 
   useEffect(() => {
     openPanel(props.open);

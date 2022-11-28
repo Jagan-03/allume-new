@@ -12,7 +12,7 @@ const SmoothScrollWrapper: React.FC<SmoothScrollWrapperProps> = (props) => {
     const size = useWindowSize();
 
     const smoothWrapper = useRef(null);
-    const smoothContent = useRef(null);
+    const smoothContent = useRef<HTMLDivElement>(null);
 
     const skewConfigs = {
         ease: 0.05,
@@ -21,7 +21,8 @@ const SmoothScrollWrapper: React.FC<SmoothScrollWrapperProps> = (props) => {
         rounded: 0
     }
 
-    useEffect(() => {                        
+    useEffect(() => {               
+        if(!smoothContent.current) return;         
         document.body.style.height = `${smoothContent.current.getBoundingClientRect().height}px`;
         
     }, [size.height]);
@@ -42,7 +43,7 @@ const SmoothScrollWrapper: React.FC<SmoothScrollWrapperProps> = (props) => {
 
     useEffect(() => {
         requestAnimationFrame(() => skewScrolling());
-    }, [skewScrolling]);
+    }, []);
 
   return (
     <div ref={smoothWrapper} id="smooth-wrapper">
