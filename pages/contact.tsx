@@ -16,7 +16,7 @@ const Contact = () => {
 
   return (
     <Layout>
-      <SmoothScrollWrapper>
+      {/* <SmoothScrollWrapper> */}
         <div id="contactWrapper" className="z-30 overflow-hidden relative">
           <div className="section p-5 relative overflow-hidden flex flex-col md:space-y-10 space-y-5 items-center justify-center h-full">
             <h1 className="lg:text-9xl md:text-7xl sm:text-6xl text-5xl text-gray-200 text-center">
@@ -107,7 +107,7 @@ const Contact = () => {
 
           <Footer />
         </div>
-      </SmoothScrollWrapper>
+      {/* </SmoothScrollWrapper> */}
     </Layout>
   );
 };
