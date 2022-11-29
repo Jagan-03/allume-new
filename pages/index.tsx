@@ -4,13 +4,15 @@ import ScrollToPlugin from "gsap/dist/ScrollToPlugin";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
 import Link from "next/link";
-import { createRef, RefObject, useEffect, useRef, useState } from "react";
+import { createRef, RefObject, useContext, useEffect, useRef, useState } from "react";
 import Footer from "../components/Footer";
 import Head from "../components/Head";
 import Header from "../components/Header";
 import Layout from "../components/Layout";
 import Stepper from "../components/Stepper";
-import styles from "../styles/Home.module.css";
+import FadeInOut from "../components/TransitionAnimations/FadeInOut";
+import { TransitionContext } from "../components/TransitionProvider";
+import useIsomorphicLayoutEffect from "../hooks/useIsomorphicLayoutEffect";
 import homeSections from "../utils/homeSections";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -110,9 +112,9 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.container}>
-
+    <div>
       <Head title="Allume Consultancy"/>
+
       <Layout>
         <main className="relative">
           <Stepper updateCurrentIndex={updateCurrentIndex} />
@@ -138,7 +140,7 @@ export default function Home() {
             </div>
             {homeSections.map((section, i) => (
               <div
-                key={i}
+              key={i}
                 ref={sectionsRef.current[i + 1]}
                 className="section two p-5 flex flex-col md:space-y-10 space-y-5 items-center justify-center h-full"
               >

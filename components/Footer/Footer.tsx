@@ -14,7 +14,7 @@ const Footer = () => {
         <ul>
           {menuLinks.map((link, i) => (
             <li key={i} className="text-xl">
-              <Link href={link.link}>
+              <Link href={link.link} scroll={false} onClick={() => window.location.pathname === link.link && window.location.reload()}>
                 <p className="md:text-2xl mb-3 text-xl text-gray-100 duration-500 before:duration-300 hover:before:opacity-100 before:block before:opacity-0 before:absolute before:-inset-1 before:-skew-y-3 before:bg-cyan-600 relative inline-block">
                   <span className="relative">{link.title}</span>
                 </p>

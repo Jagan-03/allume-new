@@ -60,7 +60,7 @@ const Header: React.FC = () => {
       <Menu open={menuOpen} />
       <div className="w-full flex justify-between items-center p-10 pr-0 relative">
         <div>
-          <Link href="/" onClick={() => window.location.pathname === "/" && window.location.reload()}>
+          <Link href="/" scroll={false} onClick={() => window.location.pathname === "/" && window.location.reload()}>
             <h1 ref={logo} className={`text-gray-200 font-bold duration-1000`}>Logo</h1>
           </Link>
         </div>
@@ -69,8 +69,8 @@ const Header: React.FC = () => {
             className="h-4 w-10 relative z-50"
             onClick={() => menuIconTransform(!menuOpen)}
           >
-            <hr ref={menuTop} className="border-2 border-white absolute top-0 w-full"/>
-            <hr ref={menuBottom} className="border border-white absolute bottom-0 w-full"/>
+            <hr ref={menuTop} className="border-2 border-white bg-white absolute top-0 w-full"/>
+            <hr ref={menuBottom} className="border border-white bg-white absolute bottom-0 w-full"/>
           </button>
         </div>
       </div>

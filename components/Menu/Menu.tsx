@@ -75,7 +75,7 @@ const Menu: React.FC<MenuProps> = (props) => {
             {
                 menuLinks.map((link, i) => (
                     <div key={`${link.title}${i}`} className="overflow-hidden">
-                        <Link href={link.link} className="relative" ref={menuLinksRef.current[i]}>
+                        <Link href={link.link} onClick={() => window.location.pathname === link.link && window.location.reload()} className="relative" ref={menuLinksRef.current[i]}>
                             <div className="duration-500 px-5 hover:bg-cyan-600 text-white">
                                 <h1 className="md:text-7xl text-4xl menuLink">{link.title}</h1>
                             </div>
