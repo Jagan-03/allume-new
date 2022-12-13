@@ -23,7 +23,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
   useEffect(() => {
     window.scrollTo({ top: 0 });
     layoutChildren.current.style.marginBottom = `${document.getElementById('footer')?.offsetHeight}px`;
-  }, [size])
+  }, [])
 
   useIsomorphicLayoutEffect(() => {
     gsap.fromTo('#transitionBanner', {
