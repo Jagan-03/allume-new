@@ -17,7 +17,7 @@ interface LayoutProps
 const Layout: React.FC<LayoutProps> = (props) => {
   
   const { timeline } = useContext(TransitionContext);
-  const layoutChildren = useRef();
+  const layoutChildren = useRef<any>(null);
   const size = useWindowSize();
   
   useEffect(() => {
