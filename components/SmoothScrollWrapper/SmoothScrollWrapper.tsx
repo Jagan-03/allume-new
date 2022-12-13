@@ -14,7 +14,7 @@ const SmoothScrollWrapper: React.FC<SmoothScrollWrapperProps> = (props) => {
 
     import("locomotive-scroll").then(locomotiveModule => {
         const scroll = new locomotiveModule.default({
-        el: document.querySelector('[data-scroll-container'),
+        el: document.querySelector('[data-scroll-container') as HTMLElement,
         smooth: true,
         lerp: 0.1
         })
