@@ -61,7 +61,7 @@ const About = () => {
   return (
       <Layout>
         <div id="aboutWrapper" className="z-30 overflow-hidden relative">
-          <div className="section p-5 relative overflow-hidden flex flex-col md:space-y-10 space-y-5 items-center justify-center h-full">
+          <div className="section mainBg p-5 relative overflow-hidden flex flex-col md:space-y-10 space-y-5 items-center justify-center h-full">
             <h1 className="lg:text-9xl md:text-7xl sm:text-6xl text-5xl text-gray-200 text-center">
               Our Company
             </h1>
@@ -104,7 +104,7 @@ const About = () => {
 
           <div
             id="aboutSectionTwo"
-            className="section headerTrigger grid md:grid-cols-2 py-24"
+            className="section mainBg headerTrigger grid md:grid-cols-2 py-24"
           >
             <div className="flex flex-col space-y-5 justify-center md:p-10 p-6">
               <h1 className="md:text-8xl sm:text-6xl text-4xl text-gray-200 sm:w-auto w-48">
@@ -187,8 +187,6 @@ const About = () => {
               </p>
             </Link>
           </div>
-
-          <Footer />
         </div>
       </Layout>
   );

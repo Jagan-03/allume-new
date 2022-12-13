@@ -1,5 +1,4 @@
 import React, { ReactNode, useEffect, useRef } from 'react'
-import useWindowSize from '../../hooks/useWindowSize';
 
 interface SmoothScrollWrapperProps
 {
@@ -9,45 +8,22 @@ interface SmoothScrollWrapperProps
 
 const SmoothScrollWrapper: React.FC<SmoothScrollWrapperProps> = (props) => {
 
-    const size = useWindowSize();
-
-    const smoothWrapper = useRef(null);
-    const smoothContent = useRef<HTMLDivElement>(null);
-
-    const skewConfigs = {
-        ease: 0.1,
-        current: 0,
-        previous: 0,
-        rounded: 0
-    }
-
-    useEffect(() => {                       
-        if(!smoothContent.current) return;         
-        document.body.style.height = `${smoothContent.current.getBoundingClientRect().height}px`;
-        
-    }, [size.height]);
-
-    
-    const skewScrolling = () => {
-        if(!smoothContent.current) return;
-        
-        skewConfigs.current = window.scrollY;
-        skewConfigs.previous += (skewConfigs.current - skewConfigs.previous) * skewConfigs.ease;
-        skewConfigs.rounded = Math.round(skewConfigs.previous * 100) / 100;
-        
-        smoothContent.current.style.transform = `translate3d(0, -${skewConfigs.rounded}px, 0)`;
-        
-        //loop vai raf
-        requestAnimationFrame(() => skewScrolling());
-    }
-
     useEffect(() => {
-        requestAnimationFrame(() => skewScrolling());
-    }, []);
+    document.body.style.height = '100%';
+    window.scrollTo({ top: 0 });
+
+    import("locomotive-scroll").then(locomotiveModule => {
+        const scroll = new locomotiveModule.default({
+        el: document.querySelector('[data-scroll-container'),
+        smooth: true,
+        lerp: 0.1
+        })
+    })
+    }, [])
 
   return (
-    <div ref={smoothWrapper} id="smooth-wrapper">
-        <div ref={smoothContent} id="smooth-content">
+    <div id="smooth-wrapper">
+        <div data-scroll-container>
             {props.children}
         </div>
     </div>

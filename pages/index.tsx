@@ -2,17 +2,11 @@ import gsap from "gsap";
 import Observer from "gsap/dist/Observer";
 import ScrollToPlugin from "gsap/dist/ScrollToPlugin";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
-import Image from "next/image";
 import Link from "next/link";
-import { createRef, RefObject, useContext, useEffect, useRef, useState } from "react";
-import Footer from "../components/Footer";
+import { createRef, RefObject, useEffect, useRef } from "react";
 import Head from "../components/Head";
-import Header from "../components/Header";
 import Layout from "../components/Layout";
 import Stepper from "../components/Stepper";
-import FadeInOut from "../components/TransitionAnimations/FadeInOut";
-import { TransitionContext } from "../components/TransitionProvider";
-import useIsomorphicLayoutEffect from "../hooks/useIsomorphicLayoutEffect";
 import homeSections from "../utils/homeSections";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -115,7 +109,7 @@ export default function Home() {
     <div>
       <Head title="Allume Consultancy"/>
 
-      <Layout>
+      <Layout main>
         <main className="relative">
           <Stepper updateCurrentIndex={updateCurrentIndex} />
           <div

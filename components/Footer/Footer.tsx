@@ -5,7 +5,7 @@ import menuLinks from "../../utils/menuLinks";
 const Footer = () => {
   return (
     <div id="footer" className="bg-gray-800">
-      <div className="grid lg:grid-cols-3 text-gray-100 md:px-32 px-5 py-10">
+      <div className="grid lg:grid-cols-3 text-gray-100 md:px-32 px-5 pt-10">
 
       <div className="flex pt-10 ">
         <h3 className="text-5xl w-60">Allume Consultancy</h3>

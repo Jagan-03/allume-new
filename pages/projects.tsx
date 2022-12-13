@@ -23,8 +23,6 @@ const Projects = () => {
             </h1>
             <hr className="introLine border-1 origin-bottom w-48 rotate-90 bg-gray-100 absolute -bottom-24" />
           </div>
-
-          <Footer />
         </div>
       {/* </SmoothScrollWrapper> */}
     </Layout>

@@ -52,9 +52,23 @@ a {
 #mainContainer
 {
   font-family: 'Times New Roman', Times, serif;
+}
+
+.mainBg
+{
   background: linear-gradient(-45deg,#0e7490, #155e75, #164e63);
   background-size: 400% 400%;
 	animation: gradient 10s ease infinite;
+}
+
+.layoutChildren
+{
+  border-radius: 0 0 7rem 7rem;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
 }
 
 #mainContainer::before
@@ -107,11 +121,6 @@ a {
   background: linear-gradient(-45deg,#0e7490, #155e75, #164e63);
   background-size: 400% 400%;
 	animation: gradient 10s ease infinite;
-}
-
-#smooth-content {
-  overflow: visible;
-  width: 100%;
 }
 
 #footer
