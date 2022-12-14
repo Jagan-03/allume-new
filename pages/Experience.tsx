@@ -15,10 +15,10 @@ const Experience: React.FC<ExperienceProps> = (props) => {
   let animating = true;
   const [count, setCount] = useState(0);
   const geometries = [
-    <sphereGeometry args={[1, 32, 32]} />,
-    <boxGeometry args={[2, 2, 2, 20, 20, 20]} />,
-    <sphereGeometry args={[1, 32, 32]} />,
-    <boxGeometry args={[2, 2, 2, 20, 20, 20]} />
+    <sphereGeometry key={'geo1'} args={[1, 32, 32]} />,
+    <boxGeometry key={'geo2'} args={[2, 2, 2, 20, 20, 20]} />,
+    <sphereGeometry key={'geo3'} args={[1, 32, 32]} />,
+    <boxGeometry key={'geo4'} args={[2, 2, 2, 20, 20, 20]} />
   ]
 
   useEffect(() => {    
