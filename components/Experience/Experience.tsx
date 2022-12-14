@@ -1,6 +1,4 @@
-import { OrbitControls } from "@react-three/drei";
-import { Perf } from "r3f-perf";
-import { useRef, useEffect, useMemo, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import gsap from "gsap";
 

@@ -9,7 +9,7 @@ import Layout from "../components/Layout";
 import Stepper from "../components/Stepper";
 import homeSections from "../utils/homeSections";
 import { Canvas } from "@react-three/fiber";
-import Experience from "./Experience";
+import Experience from "../components/Experience/Experience";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollToPlugin);
