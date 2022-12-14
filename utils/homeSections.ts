@@ -10,11 +10,6 @@ export default [
         link: "/works"
     },
     {
-        title: "What we've done",
-        linkName: "Check our projects",
-        link: "/projects"
-    },
-    {
         title: "Where we are",
         linkName: "Contact us",
         link: "/contact"

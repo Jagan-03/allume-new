@@ -3,11 +3,13 @@ import Observer from "gsap/dist/Observer";
 import ScrollToPlugin from "gsap/dist/ScrollToPlugin";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
 import Link from "next/link";
-import { createRef, RefObject, useEffect, useRef } from "react";
+import { createRef, RefObject, useEffect, useRef, useState } from "react";
 import Head from "../components/Head";
 import Layout from "../components/Layout";
 import Stepper from "../components/Stepper";
 import homeSections from "../utils/homeSections";
+import { Canvas } from "@react-three/fiber";
+import Experience from "./Experience";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollToPlugin);
@@ -20,9 +22,10 @@ export default function Home() {
   const steps = useRef<any>([]);
   let animating = false;
   let scrollToIndex = 0;
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const goTosection = (scrollUp: boolean) => {
-    if (scrollUp && scrollToIndex < 4) scrollToIndex++;
+    if (scrollUp && scrollToIndex < 3) scrollToIndex++;
     else if (!scrollUp && scrollToIndex > 0) scrollToIndex--;
 
     animating = true;
@@ -46,7 +49,7 @@ export default function Home() {
   }, []);
 
   const playStepsAnimation = () => {
-    if(!steps) return;
+    if (!steps) return;
     gsap.to(steps.current[0], {
       background: "#e5e7eb",
       scale: 1.5,
@@ -87,7 +90,8 @@ export default function Home() {
   };
 
   const changeSlide = () => {
-    if(!steps) return;
+    setCurrentIndex(scrollToIndex);
+    if (!steps) return;
     steps.current.forEach((step: gsap.TweenTarget, i: number) => {
       gsap.to(step, {
         background: i === scrollToIndex ? "#e5e7eb" : "none",
@@ -107,10 +111,22 @@ export default function Home() {
 
   return (
     <div>
-      <Head title="Allume Consultancy"/>
+      <Head title="Allume Consultancy" />
 
       <Layout main>
         <main className="relative">
+          <div className="w-screen h-screen canvas fixed top-0">
+            <Canvas
+              camera={{
+                fov: 45,
+                near: 0.1,
+                far: 200,
+                position: [5, -2, 5],
+              }}
+            >
+              <Experience currentIndex={currentIndex}/>
+            </Canvas>
+          </div>
           <Stepper updateCurrentIndex={updateCurrentIndex} />
           <div
             id="mainWrapper"
@@ -134,7 +150,7 @@ export default function Home() {
             </div>
             {homeSections.map((section, i) => (
               <div
-              key={i}
+                key={i}
                 ref={sectionsRef.current[i + 1]}
                 className="section two p-5 flex flex-col md:space-y-10 space-y-5 items-center justify-center h-full"
               >

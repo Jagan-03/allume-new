@@ -1,16 +1,10 @@
 import gsap from "gsap";
 import ScrollTrigger from "gsap/dist/ScrollTrigger";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useContext, useEffect } from "react";
 import BenefitCard from "../components/BenefitCard";
-import Footer from "../components/Footer";
 import Layout from "../components/Layout";
-import SmoothScrollWrapper from "../components/SmoothScrollWrapper";
-import FadeInOut from "../components/TransitionAnimations/FadeInOut";
-import TransitionLayout from "../components/TransitionLayout";
-import { TransitionContext, TransitionProvider } from "../components/TransitionProvider";
-import useIsomorphicLayoutEffect from "../hooks/useIsomorphicLayoutEffect";
-import useWindowSize from "../hooks/useWindowSize";
 import benefits from "../utils/benefits";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -18,6 +12,10 @@ gsap.registerPlugin(ScrollTrigger);
 const About = () => {
 
   useEffect(() => {
+    playPageAnimations();
+  }, []);
+
+  const playPageAnimations = () => {
     gsap.to(".about-1-img", {
       scale: "2",
       delay: 1,
@@ -52,11 +50,11 @@ const About = () => {
         duration: 1,
         scrollTrigger: {
           trigger: "#aboutSectionTwo",
-          start: "top 10%",
+          start: "top 50%",
         },
       }
     );
-  }, []);
+  }
 
   return (
       <Layout>
@@ -74,10 +72,12 @@ const About = () => {
           >
             <div className="overflow-hidden">
               <div className="relative about-1">
-                <img
+                <Image 
                   src="/aboutimg2.jpg"
                   alt=""
                   className="h-full w-full about-1-img"
+                  width={1000}
+                  height={1000}
                 />
               </div>
             </div>
@@ -135,12 +135,24 @@ const About = () => {
 
             <div className="flex justify-center px-10">
               <div className="p-10 text-center">
-                <img src="/avatar.png" alt="" className="w-80 pb-3" />
+                <Image 
+                  src="/avatar.png"
+                  alt=""
+                  className="w-80 pb-3"
+                  width={320}
+                  height={320}
+                />
                 <h3 className="font-bold text-4xl">John Doe</h3>
                 <p className="font-sans text-gray-500">Founder & President</p>
               </div>
               <div className="p-10 text-center">
-                <img src="/avatar.png" alt="" className="w-80 pb-3" />
+                <Image 
+                  src="/avatar.png"
+                  alt=""
+                  className="w-80 pb-3"
+                  width={320}
+                  height={320}
+                />
                 <h3 className="font-bold text-4xl">John Doe</h3>
                 <p className="font-sans text-gray-500">CTO</p>
               </div>
@@ -150,10 +162,12 @@ const About = () => {
           <div id="aboutSectionFour" className="headerTrigger flex">
             <div className="w-full grid md:grid-cols-2">
               <div className="relative flex justify-center overflow-hidden">
-                <img
+                <Image 
                   src="/chennai-bw.jpg"
                   alt=""
                   className="w-full h-full about-2-img"
+                  width={1000}
+                  height={1000}
                 />
               </div>
 

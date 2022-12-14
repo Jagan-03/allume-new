@@ -43,10 +43,14 @@ a {
 #mainWrapper
 {
   height: 100vh;
+  overflow: hidden;
+}
+
+.canvas
+{
   background: linear-gradient(-45deg,#0e7490, #155e75, #164e63);
   background-size: 400% 400%;
 	animation: gradient 10s ease infinite;
-  overflow: hidden;
 }
 
 #mainContainer
