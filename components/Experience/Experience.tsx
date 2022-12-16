@@ -16,7 +16,7 @@ const Experience: React.FC<ExperienceProps> = (props) => {
 
   
   const [count, setCount] = useState(0);
-  const modelA = useGLTF("/models/A.gltf") as any;
+  const modelA = useGLTF("/models/a.gltf") as any;
   const modelQuestion = useGLTF("/models/question.gltf") as any;
   const modelcube = useGLTF("/models/cube.gltf") as any;
   const modelLocation = useGLTF("/models/location.gltf") as any;
