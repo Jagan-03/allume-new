@@ -16,10 +16,10 @@ const Experience: React.FC<ExperienceProps> = (props) => {
 
   
   const [count, setCount] = useState(0);
-  const modelA = useGLTF("/models/A.gltf");
-  const modelQuestion = useGLTF("/models/question.gltf");
-  const modelcube = useGLTF("/models/cube.gltf");
-  const modelLocation = useGLTF("/models/location.gltf");
+  const modelA = useGLTF("/models/A.gltf") as any;
+  const modelQuestion = useGLTF("/models/question.gltf") as any;
+  const modelcube = useGLTF("/models/cube.gltf") as any;
+  const modelLocation = useGLTF("/models/location.gltf") as any;
   const models = [
     modelA,
     modelQuestion,
@@ -31,7 +31,8 @@ const Experience: React.FC<ExperienceProps> = (props) => {
   const radius = 0.5;
 
   const particlesPosition = useMemo(() => { 
-    if(!count) return;       
+    if(!count) return; 
+
     return models[props.currentIndex].scene.children[0].geometry.attributes.position.array;
   }, [count, props.currentIndex]);
 
