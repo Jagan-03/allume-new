@@ -1,93 +1,95 @@
-import { useRef, useEffect, useState } from "react";
+import { Points, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import { Perf } from "r3f-perf";
+import { useState, useEffect, useMemo, useRef } from "react";
+import * as THREE from 'three';
+import customModelVertexShader from "raw-loader!glslify-loader!./shaders/customModelVertexShader.glsl";
+import customModelFragmentShader from "raw-loader!glslify-loader!./shaders/customModelFragmentShader.glsl";
 import gsap from "gsap";
 
 interface ExperienceProps 
 {
-    currentIndex: number;
+  currentIndex: number;
 }
 
 const Experience: React.FC<ExperienceProps> = (props) => {
-  // This reference gives us direct access to our points
-  const points = useRef<any>(null);
-  let animating = true;
+
+  
   const [count, setCount] = useState(0);
-  const geometries = [
-    <sphereGeometry key={'geo1'} args={[1, 32, 32]} />,
-    <boxGeometry key={'geo2'} args={[2, 2, 2, 20, 20, 20]} />,
-    <sphereGeometry key={'geo3'} args={[1, 32, 32]} />,
-    <boxGeometry key={'geo4'} args={[2, 2, 2, 20, 20, 20]} />
-  ]
+  const modelA = useGLTF("/models/A.gltf");
+  const modelQuestion = useGLTF("/models/question.gltf");
+  const modelcube = useGLTF("/models/cube.gltf");
+  const modelLocation = useGLTF("/models/location.gltf");
+  const models = [
+    modelA,
+    modelQuestion,
+    modelcube,
+    modelLocation
+  ];
+  const points = useRef<any>(null);
+  const shaderMaterial = useRef<any>(null);
+  const radius = 0.5;
+  let animating = false;
 
-  useEffect(() => {    
-    setCount(points.current?.geometry.attributes.position.count);
-  }, []);
+  const particlesPosition = useMemo(() => { 
+    if(!count || animating) return;       
+    return models[props.currentIndex].scene.children[0].geometry.attributes.position.array;
+  }, [count, props.currentIndex]);
 
-  useEffect(() => {
-    gsap.to(points.current.geometry.attributes.position.array, {
-    
-    });
-    points.current.geometry.attributes.position.array[0] = 0;
-    points.current.geometry.attributes.position.array[1] = 0;
-    points.current.geometry.attributes.position.array[2] = 0;
-    
-  }, [props.currentIndex])
-
-  // Generate our positions attributes array
-//   const particlesPosition = useMemo(() => {
-//     const positions = new Float32Array(count * 3);
-//     const distance = 2;
-
-//     for (let i = 0; i < count; i++) {
-//       const theta = Math.random() * 0.5;
-//       const phi = Math.random() * 0.5;
-
-//       let x = distance * Math.cos(phi);
-//       let y = distance * Math.sin(phi);
-//       let z = distance * Math.cos(theta);
-
-//       positions.set([x, y, z], i * 3);
-//     }
-
-//     return positions;
-//   }, [count]);
-
+  useEffect(() => {              
+    animating = true; 
+    if(!points.current) return;   
+    gsap.to(shaderMaterialUniforms.uSize, {
+      value: 0
+    })        
+    setCount(points.current?.geometry?.attributes?.position?.count);
+    animating = false;
+  }, [props.currentIndex]);
+  
   useFrame((state) => {
-    const { clock } = state;
-
-    if(!animating) return;
-    if(!points.current) return;
+    if(!points.current || !count || animating) return;    
+    
+    const { clock } = state;    
+    shaderMaterial.current.uniforms.uTime.value = clock.elapsedTime;
+    
     for (let i = 0; i < count; i++) {
       const i3 = i * 7;
-        
+      
       points.current.geometry.attributes.position.array[i3] +=
-        Math.sin(clock.elapsedTime) * 0.003;
+      Math.sin(clock.elapsedTime) * 0.003 * radius;
       points.current.geometry.attributes.position.array[i3 + 1] +=
-        Math.tan(clock.elapsedTime) * 0.001;
-        
-        if(i3 % 3 === 0)
-        points.current.geometry.attributes.position.array[i3 + 2] +=
-        Math.tan(clock.elapsedTime * Math.random() * 0.3) * 0.01;
+      Math.tan(clock.elapsedTime) * 0.001 * radius;
+      points.current.geometry.attributes.position.array[i3 + 2] +=
+      Math.sin(clock.elapsedTime) * 0.01 * radius;
     }
 
     points.current.geometry.attributes.position.needsUpdate = true;
   });
+  
+  const shaderMaterialUniforms = {
+    uSize: { value: 0.02 },
+    uTime: { value: 0 }
+  }
 
   return (
     <>
-      {/* <Perf position="top-left" /> */}
-
-      <points ref={points}>
-      {/* <sphereGeometry args={[1, 32, 32]} /> */}
-        {/* <boxGeometry args={[2, 2, 2, 20, 20, 20]} /> */}
-        {geometries[props.currentIndex]}
-        <pointsMaterial
-          size={0.02}
-          color="white"
-          sizeAttenuation
-          depthWrite={false}
-        />
-      </points>
+      <Perf position="top-left" />
+        <Points 
+          ref={points}
+          positions={particlesPosition}
+          rotation={[0, 0, 0]} 
+          scale={2}
+          >
+          <shaderMaterial
+            vertexColors
+            ref={shaderMaterial}
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
+            vertexShader={customModelVertexShader}
+            fragmentShader={customModelFragmentShader}
+            uniforms={shaderMaterialUniforms}
+          />
+        </Points>
     </>
   );
 }
