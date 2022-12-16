@@ -3,8 +3,8 @@ import { useFrame } from "@react-three/fiber";
 import { Perf } from "r3f-perf";
 import { useState, useEffect, useMemo, useRef } from "react";
 import * as THREE from 'three';
-import customModelVertexShader from "raw-loader!glslify-loader!./shaders/customModelVertexShader.glsl";
-import customModelFragmentShader from "raw-loader!glslify-loader!./shaders/customModelFragmentShader.glsl";
+// import customModelVertexShader from "raw-loader!glslify-loader!./shaders/customModelVertexShader.glsl";
+// import customModelFragmentShader from "raw-loader!glslify-loader!./shaders/customModelFragmentShader.glsl";
 import gsap from "gsap";
 
 interface ExperienceProps 
@@ -29,28 +29,25 @@ const Experience: React.FC<ExperienceProps> = (props) => {
   const points = useRef<any>(null);
   const shaderMaterial = useRef<any>(null);
   const radius = 0.5;
-  let animating = false;
 
   const particlesPosition = useMemo(() => { 
-    if(!count || animating) return;       
+    if(!count) return;       
     return models[props.currentIndex].scene.children[0].geometry.attributes.position.array;
   }, [count, props.currentIndex]);
 
-  useEffect(() => {              
-    animating = true; 
+  useEffect(() => {    
     if(!points.current) return;   
     gsap.to(shaderMaterialUniforms.uSize, {
       value: 0
     })        
     setCount(points.current?.geometry?.attributes?.position?.count);
-    animating = false;
   }, [props.currentIndex]);
   
   useFrame((state) => {
-    if(!points.current || !count || animating) return;    
+    if(!points.current || !count) return;    
     
     const { clock } = state;    
-    shaderMaterial.current.uniforms.uTime.value = clock.elapsedTime;
+    // shaderMaterial.current.uniforms.uTime.value = clock.elapsedTime;
     
     for (let i = 0; i < count; i++) {
       const i3 = i * 7;
@@ -80,7 +77,12 @@ const Experience: React.FC<ExperienceProps> = (props) => {
           rotation={[0, 0, 0]} 
           scale={2}
           >
-          <shaderMaterial
+            <pointsMaterial 
+              size={0.02}
+              sizeAttenuation={false}
+              depthWrite={false}
+            />
+          {/* <shaderMaterial
             vertexColors
             ref={shaderMaterial}
             depthWrite={false}
@@ -88,7 +90,7 @@ const Experience: React.FC<ExperienceProps> = (props) => {
             vertexShader={customModelVertexShader}
             fragmentShader={customModelFragmentShader}
             uniforms={shaderMaterialUniforms}
-          />
+          /> */}
         </Points>
     </>
   );
