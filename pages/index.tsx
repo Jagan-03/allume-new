@@ -18,11 +18,12 @@ gsap.registerPlugin(Observer);
 export default function Home() {
   const sectionsRef = useRef(
     [...Array(5)].map((section) => createRef() as RefObject<HTMLDivElement>)
-  );
-  const steps = useRef<any>([]);
-  let animating = false;
-  let scrollToIndex = 0;
-  const [currentIndex, setCurrentIndex] = useState(0);
+    );
+    const steps = useRef<any>([]);
+    let animating = false;
+    let scrollToIndex = 0;
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const cnavasCoverTl = gsap.timeline();
 
   const goTosection = (scrollUp: boolean) => {
     if (scrollUp && scrollToIndex < 3) scrollToIndex++;
@@ -107,7 +108,11 @@ export default function Home() {
         animating = false;
       },
     });
+    cnavasCoverTl.to(".canvasCover", {width: '100%', duration: 0.5});
+    cnavasCoverTl.to(".canvasCover", {width: '50%', duration: 0.5});
   };
+
+  
 
   return (
     <div>
@@ -115,17 +120,21 @@ export default function Home() {
 
       <Layout main>
         <main className="relative">
-          <div className="w-screen h-screen canvas fixed top-0">
-            <Canvas
-              camera={{
-                fov: 45,
-                near: 0.1,
-                far: 200,
-                position: [5, -2, 5],
-              }}
-            >
-              <Experience currentIndex={currentIndex}/>
-            </Canvas>
+          <div className="w-screen h-screen fixed top-0 bg-white">
+            <div className="w-2/3 h-full absolute right-0 canvas">
+                <Canvas
+                  id="canvas"
+                  camera={{
+                    fov: 45,
+                    near: 0.1,
+                    far: 200,
+                    position: [5, -2, 5],
+                  }}
+                  >
+                  <Experience currentIndex={currentIndex} />
+                </Canvas>
+                  </div>
+            <div className="bg-white canvasCover z-40 absolute top-0 h-full md:w-1/2 w-3/5 skew-x-12 canvasSkew" />
           </div>
           <Stepper updateCurrentIndex={updateCurrentIndex} />
           <div
@@ -136,10 +145,10 @@ export default function Home() {
               ref={sectionsRef.current[0]}
               className="section one flex flex-col items-start md:p-10 p-5 justify-center space-y-5 h-full"
             >
-              <h1 className="lg:text-9xl md:text-7xl sm:text-6xl text-5xl text-white w-96">
+              <h1 className="lg:text-9xl md:text-7xl sm:text-6xl text-5xl text-gray-800 w-96">
                 Allume Consultancy
               </h1>
-              <p className="md:text-2xl text-xl text-gray-200">
+              <p className="md:text-2xl text-xl text-gray-800 w-1/2">
                 Combining a data-driven approach with deep business and
                 technology experience, we craft innovative strategies and
                 achieve impactful outcomes.
@@ -154,7 +163,7 @@ export default function Home() {
                 ref={sectionsRef.current[i + 1]}
                 className="section two p-5 flex flex-col md:space-y-10 space-y-5 items-center justify-center h-full"
               >
-                <h1 className="lg:text-9xl md:text-7xl sm:text-6xl text-5xl text-gray-200 text-center">
+                <h1 className="homeTitles lg:text-9xl md:text-7xl sm:text-6xl text-5xl text-center">
                   {section.title}
                 </h1>
                 <Link href={section.link}>

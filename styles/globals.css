@@ -53,6 +53,11 @@ a {
 	animation: gradient 10s ease infinite;
 }
 
+.canvasSkew
+{
+  /* margin-left: -5rem; */
+}
+
 #mainContainer
 {
   font-family: 'Times New Roman', Times, serif;
@@ -63,6 +68,14 @@ a {
   background: linear-gradient(-45deg,#0e7490, #155e75, #164e63);
   background-size: 400% 400%;
 	animation: gradient 10s ease infinite;
+}
+
+.homeTitles
+{
+  font-size: 72px;
+  background: -webkit-linear-gradient(-45deg, #4568dc, #b06ab3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .layoutChildren

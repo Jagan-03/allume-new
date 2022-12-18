@@ -71,7 +71,7 @@ const Experience: React.FC<ExperienceProps> = (props) => {
 
   return (
     <>
-      <Perf position="top-left" />
+      {/* <Perf position="top-left" /> */}
         <Points 
           ref={points}
           positions={particlesPosition}
