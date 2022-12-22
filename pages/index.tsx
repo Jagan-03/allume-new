@@ -10,6 +10,7 @@ import Stepper from "../components/Stepper";
 import homeSections from "../utils/homeSections";
 import { Canvas } from "@react-three/fiber";
 import Experience from "../components/Experience/Experience";
+import { OrbitControls } from "@react-three/drei";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollToPlugin);
@@ -23,6 +24,7 @@ export default function Home() {
   let animating = false;
   let scrollToIndex = 0;
   const [currentIndex, setCurrentIndex] = useState(0);
+  const canvasWrapper = gsap.timeline();
 
   const goTosection = (scrollUp: boolean) => {
     if (scrollUp && scrollToIndex < 3) scrollToIndex++;
@@ -107,6 +109,15 @@ export default function Home() {
         animating = false;
       },
     });
+    // canvasWrapper.to('#canvasWrapper', {
+    //   scale: 0,
+    //   duration: 0.5
+    // });
+    // canvasWrapper.to('#canvasWrapper', {
+    //   scale: 1,
+    //   duration: 0.5,
+    //   delay: 0.5
+    // });
   };
 
   return (
@@ -116,16 +127,17 @@ export default function Home() {
       <Layout main>
         <main className="relative">
           <div className="w-screen h-screen canvas fixed top-0">
-            <Canvas
-              camera={{
-                fov: 45,
-                near: 0.1,
-                far: 200,
-                position: [5, -2, 5],
-              }}
-            >
-              <Experience currentIndex={currentIndex}/>
-            </Canvas>
+              <Canvas
+                id="scene"
+                camera={{
+                  fov: 45,
+                  near: 0.1,
+                  far: 200,
+                  position: [5, 2, 5],
+                }}
+              > 
+                <Experience currentIndex={currentIndex}/>
+              </Canvas>
           </div>
           <Stepper updateCurrentIndex={updateCurrentIndex} />
           <div

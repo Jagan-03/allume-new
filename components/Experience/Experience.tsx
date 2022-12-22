@@ -1,100 +1,110 @@
 import { Points, useGLTF } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { dispose, useFrame, useLoader } from "@react-three/fiber";
 import { Perf } from "r3f-perf";
-import { useState, useEffect, useMemo, useRef } from "react";
-import * as THREE from 'three';
-// import customModelVertexShader from "raw-loader!glslify-loader!./shaders/customModelVertexShader.glsl";
-// import customModelFragmentShader from "raw-loader!glslify-loader!./shaders/customModelFragmentShader.glsl";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useContext,
+  useLayoutEffect,
+} from "react";
+import * as THREE from "three";
 import gsap from "gsap";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import useWindowCursor from "../../hooks/useWindowCursor";
+import useWindowSize from "../../hooks/useWindowSize";
+import useIsomorphicLayoutEffect from "../../hooks/useIsomorphicLayoutEffect";
+import { TransitionContext } from "../TransitionProvider";
+import useGetModels from "../../hooks/useGetModels";
 
-interface ExperienceProps 
-{
+interface ExperienceProps {
   currentIndex: number;
 }
 
 const Experience: React.FC<ExperienceProps> = (props) => {
-
-  
-  const [count, setCount] = useState(0);
-  const modelA = useGLTF("/models/a.gltf") as any;
-  const modelQuestion = useGLTF("/models/question.gltf") as any;
-  const modelcube = useGLTF("/models/cube.gltf") as any;
-  const modelLocation = useGLTF("/models/location.gltf") as any;
-  const models = [
-    modelA,
-    modelQuestion,
-    modelcube,
-    modelLocation
-  ];
   const points = useRef<any>(null);
-  const shaderMaterial = useRef<any>(null);
-  const radius = 0.5;
+  const pointsGroup = useRef<any>(null);
+  const radius = 1;
+  let animating = false;
+  const particles = gsap.timeline();
+  const cursor = useWindowCursor();
+  const sizes = useWindowSize();
+  const { models } = useGetModels();
 
-  const particlesPosition = useMemo(() => { 
-    if(!count) return; 
+  const modelsLoaded = useMemo(() => {
+    return models.length === 5;
+  }, [models]);
 
-    return models[props.currentIndex].scene.children[0].geometry.attributes.position.array;
-  }, [count, props.currentIndex]);
+  const count = useMemo(() => {
+    const countsArray = models.map((model: any) => {
+      return model.scene.children[0].geometry.attributes.position.count;
+    });
+    return Math.min(...countsArray);
+  }, [models]);
 
-  useEffect(() => {    
-    if(!points.current) return;   
-    gsap.to(shaderMaterialUniforms.uSize, {
-      value: 0
-    })        
-    setCount(points.current?.geometry?.attributes?.position?.count);
+  useEffect(() => {
+    if (!modelsLoaded) return;
+    
+    points.current.geometry.attributes.position.count = count;
+    updateParticlesPosition();
   }, [props.currentIndex]);
-  
+
+  const updateParticlesPosition = () => {
+    animating = true;
+    particles.to(points.current.geometry.attributes.position.array, {
+      endArray: models[props.currentIndex + 1].scene.children[0].geometry.attributes.position.array,
+      duration: 1.5,
+      onUpdate: () => {
+        points.current.geometry.attributes.position.needsUpdate = true;
+        animating = false;
+      },
+    });
+  };
+
   useFrame((state) => {
-    if(!points.current || !count) return;    
-    
-    const { clock } = state;    
-    // shaderMaterial.current.uniforms.uTime.value = clock.elapsedTime;
-    
+    if (!points.current || animating || !modelsLoaded) return;
+
+    const { clock } = state;
+
+    // const parallaxX = -(cursor.x / sizes.width);
+    // const parallaxY = (cursor.y / sizes.height);
+    // pointsGroup.current.position.x += (parallaxX - pointsGroup.current.position.x) * 0.01 * clock.elapsedTime;
+    // pointsGroup.current.position.y += (parallaxY - pointsGroup.current.position.y) * 0.01 * clock.elapsedTime;
+
     for (let i = 0; i < count; i++) {
       const i3 = i * 7;
-      
-      points.current.geometry.attributes.position.array[i3] +=
-      Math.sin(clock.elapsedTime) * 0.003 * radius;
-      points.current.geometry.attributes.position.array[i3 + 1] +=
-      Math.tan(clock.elapsedTime) * 0.001 * radius;
-      points.current.geometry.attributes.position.array[i3 + 2] +=
-      Math.sin(clock.elapsedTime) * 0.01 * radius;
-    }
 
+      points.current.geometry.attributes.position.array[i3] +=
+        Math.sin(clock.elapsedTime) * 0.003 * radius;
+      points.current.geometry.attributes.position.array[i3 + 1] +=
+        Math.sin(clock.elapsedTime) * 0.001 * radius;
+      points.current.geometry.attributes.position.array[i3 + 2] +=
+        Math.cos(clock.elapsedTime) * 0.01 * radius;
+    }
     points.current.geometry.attributes.position.needsUpdate = true;
   });
-  
-  const shaderMaterialUniforms = {
-    uSize: { value: 0.02 },
-    uTime: { value: 0 }
-  }
 
   return (
     <>
-      <Perf position="top-left" />
-        <Points 
+      {/* <Perf position="top-left" /> */}
+      <group ref={pointsGroup}>
+        <Points
+          positions={
+            models[0].scene.children[0].geometry.attributes.position.array
+          }
           ref={points}
-          positions={particlesPosition}
-          rotation={[0, 0, 0]} 
-          scale={2}
-          >
-            <pointsMaterial 
-              size={0.02}
-              sizeAttenuation={false}
-              depthWrite={false}
-            />
-          {/* <shaderMaterial
-            vertexColors
-            ref={shaderMaterial}
+          scale={1.8}
+        >
+          <pointsMaterial
+            size={0.02}
+            sizeAttenuation={false}
             depthWrite={false}
-            blending={THREE.AdditiveBlending}
-            vertexShader={customModelVertexShader}
-            fragmentShader={customModelFragmentShader}
-            uniforms={shaderMaterialUniforms}
-          /> */}
+          />
         </Points>
+      </group>
     </>
   );
-}
+};
 
 export default Experience;
