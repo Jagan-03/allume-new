@@ -10,7 +10,6 @@ import Stepper from "../components/Stepper";
 import homeSections from "../utils/homeSections";
 import { Canvas } from "@react-three/fiber";
 import Experience from "../components/Experience/Experience";
-import { OrbitControls } from "@react-three/drei";
 
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(ScrollToPlugin);
@@ -167,7 +166,9 @@ export default function Home() {
                 className="section two p-5 flex flex-col md:space-y-10 space-y-5 items-center justify-center h-full"
               >
                 <h1 className="lg:text-9xl md:text-7xl sm:text-6xl text-5xl text-gray-200 text-center">
-                  {section.title}
+                  {section.title.split(" ").map((word, i) => (
+                    <span id={`sectionTitle${i}`}>{word} </span>
+                  ))}
                 </h1>
                 <Link href={section.link}>
                   <p className="md:text-3xl text-xl text-gray-200 hover:text-cyan-500 hover:no-underline duration-500 underline underline-offset-4 italic before:duration-300 hover:before:opacity-100 before:shadow-2xl before:shadow-gray-900 before:block before:opacity-0 before:absolute before:-inset-2 before:-skew-y-3 before:bg-gray-800 relative inline-block">

@@ -30,11 +30,7 @@ const Experience: React.FC<ExperienceProps> = (props) => {
   const particles = gsap.timeline();
   const cursor = useWindowCursor();
   const sizes = useWindowSize();
-  const { models } = useGetModels();
-
-  const modelsLoaded = useMemo(() => {
-    return models.length === 5;
-  }, [models]);
+  const { models, modelsLoaded } = useGetModels();  
 
   const count = useMemo(() => {
     const countsArray = models.map((model: any) => {
@@ -55,7 +51,7 @@ const Experience: React.FC<ExperienceProps> = (props) => {
     particles.to(points.current.geometry.attributes.position.array, {
       endArray: models[props.currentIndex + 1].scene.children[0].geometry.attributes.position.array,
       duration: 1.5,
-      onUpdate: () => {
+      onComplete: () => {
         points.current.geometry.attributes.position.needsUpdate = true;
         animating = false;
       },
@@ -78,7 +74,7 @@ const Experience: React.FC<ExperienceProps> = (props) => {
       points.current.geometry.attributes.position.array[i3] +=
         Math.sin(clock.elapsedTime) * 0.003 * radius;
       points.current.geometry.attributes.position.array[i3 + 1] +=
-        Math.sin(clock.elapsedTime) * 0.001 * radius;
+        Math.tan(clock.elapsedTime) * 0.001 * radius;
       points.current.geometry.attributes.position.array[i3 + 2] +=
         Math.cos(clock.elapsedTime) * 0.01 * radius;
     }
