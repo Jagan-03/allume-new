@@ -21,13 +21,12 @@ export default function Home() {
   );
   const steps = useRef<any>([]);
   let animating = false;
-  let scrollToIndex = 0;
+  const scrollToIndex = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const canvasWrapper = gsap.timeline();
 
   const goTosection = (scrollUp: boolean) => {
-    if (scrollUp && scrollToIndex < 3) scrollToIndex++;
-    else if (!scrollUp && scrollToIndex > 0) scrollToIndex--;
+    if (scrollUp && scrollToIndex.current < 3) scrollToIndex.current += 1;
+    else if (!scrollUp && scrollToIndex.current > 0) scrollToIndex.current -= 1;
 
     animating = true;
 
@@ -86,37 +85,28 @@ export default function Home() {
     if (animating) return;
     animating = true;
 
-    scrollToIndex = index;
+    scrollToIndex.current = index;
     changeSlide();
   };
 
   const changeSlide = () => {
-    setCurrentIndex(scrollToIndex);
+    setCurrentIndex(scrollToIndex.current);
     if (!steps) return;
     steps.current.forEach((step: gsap.TweenTarget, i: number) => {
       gsap.to(step, {
-        background: i === scrollToIndex ? "#e5e7eb" : "none",
-        scale: i === scrollToIndex ? 1.5 : 1,
+        background: i === scrollToIndex.current ? "#e5e7eb" : "none",
+        scale: i === scrollToIndex.current ? 1.5 : 1,
         duration: 0.5,
       });
     });
     gsap.to("#mainWrapper", {
-      scrollTo: sectionsRef.current[scrollToIndex].current as Element,
+      scrollTo: sectionsRef.current[scrollToIndex.current].current as Element,
       duration: 1.25,
       ease: "power1.inOut",
       onComplete: () => {
         animating = false;
       },
     });
-    // canvasWrapper.to('#canvasWrapper', {
-    //   scale: 0,
-    //   duration: 0.5
-    // });
-    // canvasWrapper.to('#canvasWrapper', {
-    //   scale: 1,
-    //   duration: 0.5,
-    //   delay: 0.5
-    // });
   };
 
   return (
@@ -125,7 +115,7 @@ export default function Home() {
 
       <Layout main>
         <main className="relative">
-          <div className="w-screen h-screen canvas fixed top-0">
+          <div className="w-screen h-screen canvas bg-zinc-800 fixed top-0">
               <Canvas
                 id="scene"
                 camera={{
@@ -145,12 +135,12 @@ export default function Home() {
           >
             <div
               ref={sectionsRef.current[0]}
-              className="section one flex flex-col items-start md:p-10 p-5 justify-center space-y-5 h-full"
+              className="section one flex flex-col items-center md:p-10 p-5 justify-center space-y-5 h-full"
             >
-              <h1 className="lg:text-9xl md:text-7xl sm:text-6xl text-5xl text-white w-96">
+              <h1 className="md:text-9xl sm:text-7xl text-6xl text-white text-center lg:w-2/3 md:w-full">
                 Allume Consultancy
               </h1>
-              <p className="md:text-2xl text-xl text-gray-200">
+              <p className="md:text-2xl text-xl text-gray-200 text-center lg:w-2/3 md:w-full">
                 Combining a data-driven approach with deep business and
                 technology experience, we craft innovative strategies and
                 achieve impactful outcomes.
@@ -172,7 +162,7 @@ export default function Home() {
                   {section.title}
                 </h1>
                 <Link href={section.link}>
-                  <p className="md:text-3xl text-xl text-gray-200 hover:text-cyan-500 hover:no-underline duration-500 underline underline-offset-4 italic before:duration-300 hover:before:opacity-100 before:shadow-2xl before:shadow-gray-900 before:block before:opacity-0 before:absolute before:-inset-2 before:-skew-y-3 before:bg-gray-800 relative inline-block">
+                  <p className="md:text-3xl text-xl text-gray-200 hover:text-gray-200 hover:no-underline duration-500 underline underline-offset-4 italic before:duration-300 hover:before:opacity-100 before:shadow-2xl before:shadow-gray-900 before:block before:opacity-0 before:absolute before:-inset-2 before:-skew-y-3 before:bg-gray-800 relative inline-block">
                     <span className="relative">{section.linkName}</span>
                   </p>
                 </Link>

@@ -1,4 +1,4 @@
-import { Points, useGLTF } from "@react-three/drei";
+import { Line, Points, Segment, Segments, useGLTF } from "@react-three/drei";
 import { dispose, useFrame, useLoader } from "@react-three/fiber";
 import { Perf } from "r3f-perf";
 import React, {
@@ -17,6 +17,7 @@ import useWindowSize from "../../hooks/useWindowSize";
 import useIsomorphicLayoutEffect from "../../hooks/useIsomorphicLayoutEffect";
 import { TransitionContext } from "../TransitionProvider";
 import useGetModels from "../../hooks/useGetModels";
+import { BufferAttribute } from "three";
 
 interface ExperienceProps {
   currentIndex: number;
@@ -24,13 +25,16 @@ interface ExperienceProps {
 
 const Experience: React.FC<ExperienceProps> = (props) => {
   const points = useRef<any>(null);
-  const pointsGroup = useRef<any>(null);
+  const lines = useRef<any>(null);
+
   const radius = 1;
   let animating = false;
   const particles = gsap.timeline();
-  const cursor = useWindowCursor();
-  const sizes = useWindowSize();
-  const { models, modelsLoaded } = useGetModels();  
+  const { models, modelsLoaded } = useGetModels();
+
+  const positions = useMemo(() => {
+    return models[0].scene.children[0].geometry.attributes.position.array;
+  }, [models]);
 
   const count = useMemo(() => {
     const countsArray = models.map((model: any) => {
@@ -41,7 +45,7 @@ const Experience: React.FC<ExperienceProps> = (props) => {
 
   useEffect(() => {
     if (!modelsLoaded) return;
-    
+
     points.current.geometry.attributes.position.count = count;
     updateParticlesPosition();
   }, [props.currentIndex]);
@@ -49,7 +53,9 @@ const Experience: React.FC<ExperienceProps> = (props) => {
   const updateParticlesPosition = () => {
     animating = true;
     particles.to(points.current.geometry.attributes.position.array, {
-      endArray: models[props.currentIndex + 1].scene.children[0].geometry.attributes.position.array,
+      endArray:
+        models[props.currentIndex + 1].scene.children[0].geometry.attributes
+          .position.array,
       duration: 1.5,
       onComplete: () => {
         points.current.geometry.attributes.position.needsUpdate = true;
@@ -59,47 +65,40 @@ const Experience: React.FC<ExperienceProps> = (props) => {
   };
 
   useFrame((state) => {
-    if (!points.current || animating || !modelsLoaded) return;
-
     const { clock } = state;
-
-    // const parallaxX = -(cursor.x / sizes.width);
-    // const parallaxY = (cursor.y / sizes.height);
-    // pointsGroup.current.position.x += (parallaxX - pointsGroup.current.position.x) * 0.01 * clock.elapsedTime;
-    // pointsGroup.current.position.y += (parallaxY - pointsGroup.current.position.y) * 0.01 * clock.elapsedTime;
+    if (!points.current || !modelsLoaded) return;
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 7;
-
-      points.current.geometry.attributes.position.array[i3] +=
+      if(models[props.currentIndex + 1].scene.children[0].name === 'HomeCircle')
+      {
+        points.current.rotation.z += 0.000001;
+      }
+      else 
+      { 
+        points.current.rotation.z = 0;
+        points.current.geometry.attributes.position.array[i3] +=
         Math.sin(clock.elapsedTime) * 0.003 * radius;
-      points.current.geometry.attributes.position.array[i3 + 1] +=
-        Math.tan(clock.elapsedTime) * 0.001 * radius;
-      points.current.geometry.attributes.position.array[i3 + 2] +=
+        points.current.geometry.attributes.position.array[i3 + 1] +=
+        Math.sin(clock.elapsedTime) * 0.001 * radius;
+        points.current.geometry.attributes.position.array[i3 + 2] +=
         Math.cos(clock.elapsedTime) * 0.01 * radius;
+      }
     }
     points.current.geometry.attributes.position.needsUpdate = true;
   });
 
   return (
-    <>
+    <group>
       {/* <Perf position="top-left" /> */}
-      <group ref={pointsGroup}>
-        <Points
-          positions={
-            models[0].scene.children[0].geometry.attributes.position.array
-          }
-          ref={points}
-          scale={1.8}
-        >
-          <pointsMaterial
-            size={0.02}
-            sizeAttenuation={false}
-            depthWrite={false}
-          />
-        </Points>
-      </group>
-    </>
+      <Points positions={positions} ref={points} scale={1.8}>
+        <pointsMaterial
+          size={0.02}
+          sizeAttenuation={false}
+          depthWrite={false}
+        />
+      </Points>
+    </group>
   );
 };
 

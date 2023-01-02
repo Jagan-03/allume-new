@@ -7,13 +7,13 @@ export default function useGetModels ()
   const models = useMemo(() => useLoader(
     GLTFLoader,
     [
-      "/models/a.gltf",
-      "/models/a.gltf",
+      "/models/homeCircle.gltf",
+      "/models/homeCircle.gltf",
       "/models/question.gltf",
       "/models/cube.gltf",
       "/models/location.gltf",
     ]
-  ) as any, []);
+  ) as any, []);  
 
   const modelsLoaded = useMemo(() => {
     return models.length === 5;
