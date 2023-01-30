@@ -64,7 +64,7 @@ const Header: React.FC = () => {
             <h1 ref={logo} className={`text-gray-200 font-bold duration-1000`}>Logo</h1>
           </Link>
         </div>
-        <div className="bg-gray-800 relative flex px-3 py-4 rounded-l-xl invertedRadius">
+        {/* <div className="bg-gray-800 relative flex px-3 py-4 rounded-l-xl invertedRadius">
           <button
             className="h-4 w-10 relative z-50"
             onClick={() => menuIconTransform(!menuOpen)}
@@ -72,7 +72,7 @@ const Header: React.FC = () => {
             <hr ref={menuTop} className="border-2 border-white bg-white absolute top-0 w-full"/>
             <hr ref={menuBottom} className="border border-white bg-white absolute bottom-0 w-full"/>
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
